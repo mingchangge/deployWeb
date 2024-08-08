@@ -23,16 +23,23 @@ runs:
       with:
         key: deploy-web-${{ steps.get-hash.outputs.hash }}
         path: ${{ github.workspace }}/node_modules
+        restore-keys: |
+          deploy-web-${{ steps.get-hash.outputs.hash }}
+          deploy-web-
+
     - name: Run command based on OS
-        run: |
-          echo "Running on ${{ runner.os }}"
-          # 可以在这里添加特定操作系统的命令
-        shell: |
-          {% if runner.os == 'Windows' %}
-          cmd.exe
-          {% else %}
-          bash
-          {% endif %}
+      run: |
+        echo "Running on ${{ runner.os }}"
+        # 可以在这里添加特定操作系统的命令
+      shell: |
+        {% raw %}
+        {% if runner.os == 'Windows' %}
+        cmd.exe
+        {% else %}
+        bash
+        {% endif %}
+        {% endraw %}
+
     - name: 安装依赖
       if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm i --registry=http://registry.npmmirror.com
