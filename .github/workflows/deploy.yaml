@@ -4,6 +4,7 @@ jobs:
   build-dev:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Run composite action
         uses: ./.github/actions/composite-action
       - run: echo "🎉 success!"
