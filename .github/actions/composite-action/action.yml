@@ -32,3 +32,7 @@ runs:
           npm i --registry=https://registry.npmmirror.com
         fi
       shell: bash
+
+    - name: 执行编译
+      run: npm run build:${{env.MODE}}
+      shell: bash
