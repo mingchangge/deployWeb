@@ -4,16 +4,30 @@ description: "Runs linter and formatter"
 runs:
   using: "composite"
   steps:
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: 检出代码
+      uses: actions/checkout@v3
       with:
-        node-version: "14"
+        fetch-depth: 15
 
-    - name: Install dependencies
-      run: npm install
+    - name: 计算哈希
+      uses: actions/hash-files@v1
+      id: get-hash
+      with:
+        patterns: |-
+          package.json
+          package-lock.json
 
-    - name: Run linter
-      run: npm run lint
+    - name: 设置缓存
+      id: npm-cache
+      uses: actions/cache@v3
+      with:
+        key: deploy-web-${{ steps.get-hash.outputs.hash }}
+        path: ${{ GITHUB_WORKSPACE }}/node_modules
 
-    - name: Run formatter
-      run: npm run format
+    - name: 安装依赖
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm i --registry=http://registry.npmmirror.com
+
+# 设置默认的 shell 环境
+default-run:
+  shell: bash
