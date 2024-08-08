@@ -13,33 +13,27 @@ runs:
       uses: actions/hash-files@v1
       id: get-hash
       with:
-        patterns: |-
+        paths: |
           package.json
           package-lock.json
 
     - name: 设置缓存
-      id: npm-cache
       uses: actions/cache@v3
       with:
         key: deploy-web-${{ steps.get-hash.outputs.hash }}
         path: ${{ github.workspace }}/node_modules
         restore-keys: |
-          deploy-web-${{ steps.get-hash.outputs.hash }}
           deploy-web-
 
-    - name: Run command based on OS
-      run: |
-        echo "Running on ${{ runner.os }}"
-        # 可以在这里添加特定操作系统的命令
-      shell: |
-        {% raw %}
-        {% if runner.os == 'Windows' %}
-        cmd.exe
-        {% else %}
-        bash
-        {% endif %}
-        {% endraw %}
+    - name: 运行命令 - Windows
+      if: runner.os == 'Windows'
+      shell: cmd
+      run: echo Running on Windows
+
+    - name: 运行命令 - Ubuntu
+      if: runner.os == 'Linux'
+      shell: bash
+      run: echo Running on Ubuntu
 
     - name: 安装依赖
-      if: steps.npm-cache.outputs.cache-hit != 'true'
-      run: npm i --registry=http://registry.npmmirror.com
+      run: npm i --registry=https://registry.npmmirror.com
