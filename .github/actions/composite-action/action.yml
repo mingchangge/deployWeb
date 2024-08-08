@@ -10,10 +10,10 @@ runs:
         fetch-depth: 15
 
     - name: 计算哈希
-      uses: actions/hash-files@v1
+      uses: seepine/hash-files@v1
       id: get-hash
       with:
-        paths: |
+        patterns: |-
           package.json
           package-lock.json
 
@@ -21,23 +21,9 @@ runs:
       uses: actions/cache@v3
       with:
         key: deploy-web-${{ steps.get-hash.outputs.hash }}
-        path: ${{ github.workspace }}/node_modules
+        path: node_modules
         restore-keys: |
           deploy-web-
-
-    - name: 运行命令基于操作系统
-      run: |
-        echo "Running on ${{ runner.os }}"
-        if [ "${{ runner.os }}" == "Windows" ]; then
-          # 使用 cmd 作为 shell 运行 Windows 特定的命令
-          echo "This is Windows"
-          cmd.exe /c "echo Windows-specific command here"
-        else
-          # 使用 bash 作为 shell 运行 Linux/Ubuntu 特定的命令
-          echo "This is Linux/Ubuntu"
-          echo "Linux-specific command here"
-        fi
-      shell: bash
 
     - name: 安装依赖
       run: |
