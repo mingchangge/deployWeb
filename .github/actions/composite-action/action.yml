@@ -25,15 +25,24 @@ runs:
         restore-keys: |
           deploy-web-
 
-    - name: 运行命令 - Windows
-      if: runner.os == 'Windows'
-      shell: cmd
-      run: echo Running on Windows
-
-    - name: 运行命令 - Ubuntu
-      if: runner.os == 'Linux'
+    - name: 运行命令基于操作系统
+      run: |
+        echo "Running on ${{ runner.os }}"
+        if [ "${{ runner.os }}" == "Windows" ]; then
+          # 使用 cmd 作为 shell 运行 Windows 特定的命令
+          echo "This is Windows"
+          cmd.exe /c "echo Windows-specific command here"
+        else
+          # 使用 bash 作为 shell 运行 Linux/Ubuntu 特定的命令
+          echo "This is Linux/Ubuntu"
+          echo "Linux-specific command here"
+        fi
       shell: bash
-      run: echo Running on Ubuntu
 
     - name: 安装依赖
-      run: npm i --registry=https://registry.npmmirror.com
+      run: |
+        echo "npm install"
+        if [ "${{ steps.npm-cache.outputs.cache-hit }}" != "true" ]; then
+          npm i --registry=https://registry.npmmirror.com
+        fi
+      shell: bash
