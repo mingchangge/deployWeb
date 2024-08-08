@@ -22,12 +22,17 @@ runs:
       uses: actions/cache@v3
       with:
         key: deploy-web-${{ steps.get-hash.outputs.hash }}
-        path: ${{ GITHUB_WORKSPACE }}/node_modules
-
+        path: ${{ github.workspace }}/node_modules
+    - name: Run command based on OS
+        run: |
+          echo "Running on ${{ runner.os }}"
+          # 可以在这里添加特定操作系统的命令
+        shell: |
+          {% if runner.os == 'Windows' %}
+          cmd.exe
+          {% else %}
+          bash
+          {% endif %}
     - name: 安装依赖
       if: steps.npm-cache.outputs.cache-hit != 'true'
       run: npm i --registry=http://registry.npmmirror.com
-
-# 设置默认的 shell 环境
-default-run:
-  shell: bash
