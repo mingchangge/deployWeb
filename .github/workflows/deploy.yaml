@@ -12,3 +12,5 @@ jobs:
       if: ${{ github.ref_name == 'master' }}
       MODE: dev
       namespace: deploy-web-dev
+      docker-tag: latest
+      kube-config: ${{ secrets.KUBE_CONFIG_DEV }}

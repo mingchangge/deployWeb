@@ -24,7 +24,7 @@ GitHub Actions 提供了一些机制来重用步骤和工作流程，以避免�
 
 1. **可重用工作流（Reusable Workflows）**：你可以创建一个可重用的工作流，然后在其他工作流中通过 `uses` 关键字来调用它。这需要在可重用工作流的 YAML 文件中使用 `on: workflow_call:` 指令，并在调用时指定工作流的位置。例如，如果可重用的工作流位于同一存储库中，你可以这样调用它：`./.github/workflows/{filename}`，如果是在其他存储库中，则使用 `{owner}/{repo}/.github/workflows/{filename}@{ref}` 格式 。
 
-2. **组合动作（Composite Actions）**：组合动作允许你将多个步骤合并成一个单一的步骤，然后可以在任何作业中像使用其他 GitHub Actions 一样使用这个组合动作。这有助于避免在多个地方重复相同的步骤集合 。
+2. **组合动作（Composite Actions）**：组合动作允许你将多个步骤合并成一个单一的步骤，然后可以在任何作业中像使用其他 GitHub Actions 一样使用这个组合动作。这有助于避免在多个地方重复相同的步骤集合 。需要每个 run 都指定 shell，目前没有尝试没有有效的将多个 run 的 shell 合并
 
 3. **环境变量和秘密（Environment Variables and Secrets）**：在使用可重用工作流时，你可以定义输入（inputs）和秘密（secrets），这样就可以在调用工作流时传递所需的配置和凭据 。
 

@@ -36,3 +36,30 @@ runs:
     - name: 执行编译
       run: npm run build:${{env.MODE}}
       shell: bash
+
+    - name: 构建准备
+      uses: actions/setup-buildx-action@v2
+      with:
+        driver-opts: image=ghub.lxq.com/buildkit
+
+    - name: 构建和发布镜像
+      uses: actions/build-push-action@v4
+      with:
+        context: .
+        file: docker/Dockerfile
+        push: true
+        tags: ghub.lxq.com/deploy-web:${{env.docker-tag}}
+
+    - name: 更新镜像
+      uses: actions/kubectl@master
+      env:
+        KUBE_CONFIG: ${{ env.kube-config }}
+      with:
+        args: set image deployment/deploy-web deploy-web=ghub.lxq.com/deploy-web:${{ env.docker-tag }} -n ${{env.namespace}}
+
+    - name: 滚动更新
+      uses: actions/kubectl@master
+      env:
+        KUBE_CONFIG: ${{ env.kube-config }}
+      with:
+        args: rollout restart deployment/deploy-web -n ${{env.namespace}}
