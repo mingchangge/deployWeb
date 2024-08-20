@@ -1,3 +1,3 @@
-FROM ghub.lxq.com/nginx
+FROM rancher.lxq.com/nginx
 COPY dist/ /usr/share/nginx/html/
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf

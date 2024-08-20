@@ -40,7 +40,7 @@ runs:
     - name: 构建准备
       uses: actions/setup-buildx-action@v2
       with:
-        driver-opts: image=ghub.lxq.com/buildkit
+        driver-opts: image=rancher.lxq.com:5000/buildkit
 
     - name: 构建和发布镜像
       uses: actions/build-push-action@v4
@@ -48,18 +48,11 @@ runs:
         context: .
         file: docker/Dockerfile
         push: true
-        tags: ghub.lxq.com/deploy-web:${{env.docker-tag}}
+        tags: rancher.lxq.com:5000/deploy-web:${{env.docker-tag}}
 
     - name: 更新镜像
       uses: actions/kubectl@master
       env:
         KUBE_CONFIG: ${{ env.kube-config }}
       with:
-        args: set image deployment/deploy-web deploy-web=ghub.lxq.com/deploy-web:${{ env.docker-tag }} -n ${{env.namespace}}
-
-    - name: 滚动更新
-      uses: actions/kubectl@master
-      env:
-        KUBE_CONFIG: ${{ env.kube-config }}
-      with:
-        args: rollout restart deployment/deploy-web -n ${{env.namespace}}
+        args: set image deployment/deploy-web deploy-web=rancher.lxq.com:5000/deploy-web:${{ env.docker-tag }} -n ${{env.namespace}}
