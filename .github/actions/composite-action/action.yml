@@ -51,8 +51,15 @@ runs:
         tags: rancher.lxq.com:5000/deploy-web:${{env.docker-tag}}
 
     - name: 更新镜像
-      uses: actions/kubectl@master
+      uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
       env:
         KUBE_CONFIG: ${{ env.kube-config }}
       with:
         args: set image deployment/deploy-web deploy-web=rancher.lxq.com:5000/deploy-web:${{ env.docker-tag }} -n ${{env.namespace}}
+
+    - name: 滚动更新
+      uses: actions-hub/kubectl@master
+      env:
+        KUBE_CONFIG: ${{ env.kube-config }}
+      with:
+        args: rollout restart deployment/deploy-web -n ${{env.namespace}}
