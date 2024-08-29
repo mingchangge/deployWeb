@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run composite action
         uses: ./.github/actions/composite-action
-      - run: echo "🎉 success!"
+      - run: echo "🎉 success!!!"
     env:
       if: ${{ github.ref_name == 'master' }}
       MODE: dev
