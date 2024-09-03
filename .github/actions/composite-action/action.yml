@@ -25,6 +25,11 @@ runs:
         restore-keys: |
           deploy-web-
 
+    - name: 设置 Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: "18"
+
     - name: 安装依赖
       run: |
         echo "npm install"
