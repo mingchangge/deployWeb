@@ -30,13 +30,13 @@ runs:
       with:
         node-version: "18"
 
-    # - name: 安装依赖
-    #   run: |
-    #     echo "npm install"
-    #     if [ "${{ steps.npm-cache.outputs.cache-hit }}" != "true" ]; then
-    #       npm i --registry=https://registry.npmmirror.com
-    #     fi
-    #   shell: bash
+    - name: 安装依赖
+      run: |
+        echo "npm install"
+        if [ "${{ steps.npm-cache.outputs.cache-hit }}" != "true" ]; then
+          npm i --registry=https://registry.npmmirror.com
+        fi
+      shell: bash
 
     # - name: 执行编译
     #   run: npm run build:${{env.MODE}}
