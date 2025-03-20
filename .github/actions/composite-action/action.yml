@@ -4,11 +4,6 @@ description: "Runs linter and formatter1-20250318-1"
 runs:
   using: "composite"
   steps:
-    # - name: 检出代码
-    #   uses: actions/checkout@v3
-    #   with:
-    #     fetch-depth: 15
-
     - name: 计算哈希
       uses: seepine/hash-files@v1
       id: get-hash
