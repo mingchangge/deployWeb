@@ -4,7 +4,11 @@ jobs:
   build-dev:
     runs-on: [self-hosted, linux, X64]
     steps:
-      - uses: actions/checkout@v3
+      - name: 检出代码
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 15
+      # - uses: actions/checkout@v3
       - name: Run composite action
         uses: ./.github/actions/composite-action
       - run: echo "🎉 success!!"
