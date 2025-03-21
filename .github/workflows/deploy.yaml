@@ -17,5 +17,5 @@ jobs:
       namespace: deploy-web-dev
       docker-tag: latest
       kube-config: ${{ secrets.KUBE_CONFIG_DEV }}
-      # DOCKER_HOST: tcp://192.168.21.157:2375
+      # DOCKER_HOST: tcp://192.168.21.157:5000
       DOCKER_TLS_VERIFY: 0
