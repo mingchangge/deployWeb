@@ -12,7 +12,7 @@ jobs:
         uses: ./.github/actions/composite-action
       - run: echo "🎉 success!!"
     env:
-      DOCKER_TLS_VERIFY: 0
+      DOCKER_TLS_VERIFY: "0"
       if: ${{ github.ref_name == 'master' }}
       MODE: dev
       namespace: deploy-web-dev
