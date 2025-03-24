@@ -1,5 +1,5 @@
 name: "Composite Action Example"
-description: "Runs linter and formatter1-20250324"
+description: "Runs linter and formatter1-20250324-1"
 
 runs:
   using: "composite"
