@@ -46,9 +46,11 @@ runs:
           -subj "/CN=dockerCA"
         mkdir -p /home/runner/.docker
         cp /tmp/ca.crt /home/runner/.docker/ca.pem
+      shell: bash
 
     - name: 检查 CA 证书文件
       run: ls -l /home/runner/.docker/ca.pem
+      shell: bash
 
     - name: 构建准备
       uses: docker/setup-buildx-action@v3
