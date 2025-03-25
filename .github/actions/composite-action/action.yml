@@ -57,6 +57,11 @@ runs:
       env:
         DOCKER_TLS_VERIFY: "0"
       with:
+        driver: docker-container
+        install: false
+        use: true
+        cache-binary: true
+        cleanup: true
         driver-opts: image=192.168.21.157:5000/moby/buildkit #指定用于运行 BuildKit 的容器镜像--暂时没有
 
     - name: 构建和发布镜像
