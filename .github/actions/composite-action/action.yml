@@ -62,13 +62,14 @@ runs:
         cleanup: true
         driver-opts: image=192.168.21.157:5000/moby/buildkit #指定用于运行 BuildKit 的容器镜像--暂时没有
 
-    - name: 构建和发布镜像
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        #file: docker/Dockerfile
-        push: true
-        tags: 192.168.21.157:5000/deploy-web:${{env.docker-tag}}
+
+    # - name: 构建和发布镜像
+    #   uses: docker/build-push-action@v4
+    #   with:
+    #     context: .
+    #     #file: docker/Dockerfile
+    #     push: true
+    #     tags: 192.168.21.157:5000/deploy-web:${{env.docker-tag}}
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
