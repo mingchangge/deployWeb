@@ -4,7 +4,8 @@
       <a-layout-header>Header</a-layout-header>
       <a-layout>
         <a-layout-sider>
-          <a-menu
+          <Menu />
+          <!-- <a-menu
             show-collapse-button
             breakpoint="xl"
             :default-open-keys="['1']"
@@ -15,7 +16,7 @@
             <a-menu-item v-for="item in menu.data" :key="item.key">{{
               item.title
             }}</a-menu-item>
-          </a-menu>
+          </a-menu> -->
         </a-layout-sider>
         <a-layout-content>
           <router-view></router-view>
@@ -27,33 +28,47 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, nextTick } from "vue";
-import { menuData } from "../router/index";
+// import { onMounted, reactive, ref, nextTick } from "vue";
+// import { useRouter } from "vue-router";
+// import { menuData } from "../router/index";
+import Menu from "./components/menu/index.vue";
 
-const menu = reactive({
-  data: [],
-  activeMenu: [],
-  initData: (data) => {
-    return data.map((item) => {
-      if (item.children && item.children.length > 0) {
-        return menu.initData(item.children);
-      }
-      return {
-        key: item.meta.title === "首页" ? "/" : item.path,
-        title: item.meta.title,
-      };
-    });
-  },
-  onClickMenuItem: (item) => {
-    console.log(item);
-    menu.activeMenu = [item];
-  },
-});
+// // 引入路由
+// const $router = useRouter();
+// // 菜单数据
+// const menu = reactive({
+//   data: [],
+//   activeMenu: [],
+//   initData: (data) => {
+//     return data.map((item) => {
+//       if (item.children && item.children.length > 0) {
+//         return menu.initData(item.children);
+//       }
+//       return {
+//         key: item.meta.title === "首页" ? "/" : `/${item.path}`,
+//         title: item.meta.title,
+//       };
+//     });
+//   },
+//   isActive: (item) => {
+//     return (menu.activeMenu = [item]);
+//   },
+//   // 菜单点击事件
+//   onClickMenuItem: (item) => {
+//     console.log(item);
+//     // menu.activeMenu = [item];
+//     menu.isActive(item);
+//     nextTick(() => {
+//       const path = item === "/" ? "/" : item;
+//       $router.push(path);
+//     });
+//   },
+// });
 
-onMounted(() => {
-  menu.data = menu.initData(menuData);
-  menu.activeMenu.push(menu.data[0].key);
-});
+// onMounted(() => {
+//   menu.data = menu.initData(menuData);
+//   menu.activeMenu.push(menu.data[0].key);
+// });
 </script>
 
 <style lang="less" scoped>

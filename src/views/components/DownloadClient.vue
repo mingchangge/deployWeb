@@ -1,15 +1,14 @@
 <template>
   <a-table :columns="columns" :data="data">
     <template #fileName="{ record }">
-        <span v-if="record.icon" class="logoBox">
-            <img :src="record.icon" />
-          </span>
-          <span>{{ record.fileName }}</span>
+      <span v-if="record.icon" class="logoBox">
+        <img :src="record.icon" />
+      </span>
+      <span>{{ record.fileName }}</span>
     </template>
-     <template #action="{ record }">
-      <a-button type="primary" @click="downloadFile(record)">
-        下载
-      </a-button>
+    <template #action="{ record }">
+      <a-button type="primary" @click="downloadFile(record)"> 下载 </a-button>
+    </template>
   </a-table>
 </template>
 
@@ -20,11 +19,11 @@ import yaml from "js-yaml";
 const columns = ref([
   {
     title: "文件名",
-    slotName:  "fileName" ,
+    slotName: "fileName",
   },
   {
     title: "操作",
-    slotName: "action" ,
+    slotName: "action",
   },
 ]);
 const downloadInfo = ref([]);
@@ -63,14 +62,14 @@ const fetchMeta = (path, os) => {
     });
 };
 const downloadFile = (record) => {
-    const link = document.createElement('a')
-    if (file.url.includes('https://') || file.url.includes('http://')) {
-    link.href = file.url
-    } else {
-    link.href = this.origin + '/api/file/' + file.url
-    }
-    link.download = file.fileName
-    link.click()
+  const link = document.createElement("a");
+  if (file.url.includes("https://") || file.url.includes("http://")) {
+    link.href = file.url;
+  } else {
+    link.href = this.origin + "/api/file/" + file.url;
+  }
+  link.download = file.fileName;
+  link.click();
 };
 onMounted(() => {
   //   downloadAppMeta();
