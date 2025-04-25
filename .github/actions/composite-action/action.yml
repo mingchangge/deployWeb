@@ -51,6 +51,15 @@ runs:
     # - name: 检查 CA 证书文件
     #   run: ls -l /home/runner/.docker/ca.pem
     #   shell: bash
+    - name: 调试 Docker 环境
+      run: |
+        echo "DOCKER_HOST: $DOCKER_HOST"
+        echo "DOCKER_TLS_VERIFY: $DOCKER_TLS_VERIFY"
+        docker version
+        docker info
+        ls -la /home/runner/.docker
+        cat /home/runner/.docker/config.json 2>/dev/null || echo "无 Docker 配置文件"
+      shell: bash
 
     - name: 构建准备
       uses: docker/setup-buildx-action@v3
