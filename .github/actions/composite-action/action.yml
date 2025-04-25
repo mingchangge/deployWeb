@@ -32,11 +32,11 @@ runs:
       run: npm run build:${{env.MODE}}
       shell: bash
 
-    - name: Debug Network
-      run: |
-        curl -v https://github.com
-        git ls-remote https://github.com/mingchangge/deployWeb.git
-      shell: bash
+    # - name: Debug Network
+    #   run: |
+    #     curl -v https://github.com
+    #     git ls-remote https://github.com/mingchangge/deployWeb.git
+    #   shell: bash
 
     # - name: 生成并复制 CA 证书
     #   run: |
