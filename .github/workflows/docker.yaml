@@ -7,23 +7,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Force disable TLS
+      - name: Clean Docker and Buildx configurations
         run: |
+          rm -rf /home/runner/.docker
+          docker builder prune --all --force
+
+      - name: Reinitialize Docker and Buildx
+        run: |
+          mkdir -p /home/runner/.docker
           echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
           echo "DOCKER_HOST=unix:///var/run/docker.sock" >> $GITHUB_ENV
-
-      - name: Cleanup Buildx
-        run: |
-          docker buildx rm builder-52f2648e-421f-423a-97b7-e011de025904 || true
-          docker builder prune --force
-
-      - name: Create Buildx builder
-        run: |
           docker buildx create --name mybuilder --driver docker --use
-          docker buildx inspect --bootstrap
 
       - name: Build Docker image
         run: docker buildx build --platform linux/amd64 -t myimage .
