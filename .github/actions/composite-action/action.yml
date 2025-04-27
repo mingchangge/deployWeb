@@ -66,6 +66,8 @@ runs:
 
     - name: Disable TLS (for GitHub Actions)
       run: echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
+      shell: bash
+
     - name: Verify Docker connection
       run: |
         docker info
