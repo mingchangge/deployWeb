@@ -37,7 +37,6 @@ runs:
     #     curl -v https://github.com
     #     git ls-remote https://github.com/mingchangge/deployWeb.git
     #   shell: bash
-
     # - name: 生成并复制 CA 证书
     #   run: |
     #     openssl req -x509 -newkey rsa:4096 -days 365 -nodes \
@@ -47,30 +46,31 @@ runs:
     #     mkdir -p /home/runner/.docker
     #     cp /tmp/ca.crt /home/runner/.docker/ca.pem
     #   shell: bash
-
     # - name: 检查 CA 证书文件
     #   run: ls -l /home/runner/.docker/ca.pem
     #   shell: bash
-    - name: 创建 Docker 配置目录
-      run: |
-        mkdir -p /home/runner/.docker
-        chmod 777 /home/runner/.docker
-      shell: bash
-
     - name: 构建准备
       uses: docker/setup-buildx-action@v3
-      env:
-        DOCKER_HOST: "unix:///run/docker.sock"
-        DOCKER_TLS_VERIFY: "0"
-      with:
-        driver: docker-container
-        install: false
-        use: true
-        cache-binary: true
-        cleanup: true
-        driver-opts: |
-          image=192.168.21.157:5000/moby/buildkit #指定用于运行 BuildKit 的容器镜像--暂时没有
-          network=host
+      # env:
+      #   DOCKER_HOST: "unix:///run/docker.sock"
+      #   DOCKER_TLS_VERIFY: "0"
+      # with:
+      #   driver: docker-container
+      #   install: false
+      #   use: true
+      #   cache-binary: true
+      #   cleanup: true
+      #   driver-opts: |
+      #     image=192.168.21.157:5000/moby/buildkit #指定用于运行 BuildKit 的容器镜像--暂时没有
+      #     network=host
+
+    - name: Disable TLS (for GitHub Actions)
+      run: echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
+    - name: Verify Docker connection
+      run: |
+        docker info
+        docker version
+      shell: bash
 
     - name: 验证 Docker 环境
       run: |
