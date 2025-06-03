@@ -36,18 +36,6 @@ runs:
     #     curl -v https://github.com
     #     git ls-remote https://github.com/mingchangge/deployWeb.git
     #   shell: bash
-    # - name: 生成并复制 CA 证书
-    #   run: |
-    #     openssl req -x509 -newkey rsa:4096 -days 365 -nodes \
-    #       -keyout /tmp/ca.key \
-    #       -out /tmp/ca.crt \
-    #       -subj "/CN=dockerCA"
-    #     mkdir -p /home/runner/.docker
-    #     cp /tmp/ca.crt /home/runner/.docker/ca.pem
-    #   shell: bash
-    # - name: 检查 CA 证书文件
-    #   run: ls -l /home/runner/.docker/ca.pem
-    #   shell: bash
     - name: 构建准备
       uses: docker/setup-buildx-action@v3
       # env:
@@ -63,33 +51,33 @@ runs:
       #     image=192.168.21.157:5000/moby/buildkit #指定用于运行 BuildKit 的容器镜像--暂时没有
       #     network=host
 
-    - name: Disable TLS (for GitHub Actions)
-      run: echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
-      shell: bash
+    # - name: Disable TLS (for GitHub Actions)
+    #   run: echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
+    #   shell: bash
 
-    - name: Verify Docker connection
-      run: |
-        docker info
-        docker version
-      shell: bash
+    # - name: Verify Docker connection
+    #   run: |
+    #     docker info
+    #     docker version
+    #   shell: bash
 
-    - name: 验证 Docker 环境
-      run: |
-        echo "Docker 版本信息:"
-        docker version
-        echo "Docker 守护进程配置:"
-        docker info | grep -E "Hostname|Server Version|Root Dir|HTTP Proxy"
-        echo "检查 Buildx 插件:"
-        ls -la /home/runner/.docker/cli-plugins/
-      shell: bash
+    # - name: 验证 Docker 环境
+    #   run: |
+    #     echo "Docker 版本信息:"
+    #     docker version
+    #     echo "Docker 守护进程配置:"
+    #     docker info | grep -E "Hostname|Server Version|Root Dir|HTTP Proxy"
+    #     echo "检查 Buildx 插件:"
+    #     ls -la /home/runner/.docker/cli-plugins/
+    #   shell: bash
 
-    # - name: 构建和发布镜像
-    #   uses: docker/build-push-action@v4
-    #   with:
-    #     context: .
-    #     #file: docker/Dockerfile
-    #     push: true
-    #     tags: 192.168.21.157:5000/deploy-web:${{env.docker-tag}}
+    - name: 构建和发布镜像
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: docker/Dockerfile
+        push: true
+        tags: myDockerHub/deploy-web:${{env.docker-tag}}
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
