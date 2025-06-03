@@ -1,19 +1,19 @@
-# name: Deploy
-# on: [push]
-# jobs:
-#   build-dev:
-#     runs-on: [self-hosted, linux, X64]
-#     steps:
-#       - name: 检出代码
-#         uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 15
-#       - name: Run composite action
-#         uses: ./.github/actions/composite-action
-#       - run: echo "🎉 success!!"
-#     env:
-#       if: ${{ github.ref_name == 'master' }}
-#       MODE: dev
-#       namespace: deploy-web-dev
-#       docker-tag: latest
-#       kube-config: ${{ secrets.KUBE_CONFIG_DEV }}
+name: Deploy
+on: [push]
+jobs:
+  build-dev:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 15
+      - name: Run composite action
+        uses: ./.github/actions/composite-action
+      - run: echo "🎉 success!!"
+    env:
+      if: ${{ github.ref_name == 'master' }}
+      MODE: dev
+      namespace: deploy-web-dev
+      docker-tag: latest
+      kube-config: ${{ secrets.KUBE_CONFIG_DEV }}

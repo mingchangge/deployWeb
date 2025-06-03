@@ -1,6 +1,5 @@
 name: "Composite Action Example"
 description: "Runs linter and formatter"
-on: [push]
 runs:
   using: "composite"
   steps:
