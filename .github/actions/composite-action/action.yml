@@ -43,33 +43,13 @@ runs:
           image=192.168.21.157:5000/moby/buildkit:latest #指定用于运行 BuildKit 的容器镜像
           network=host
 
-    # - name: Disable TLS (for GitHub Actions)
-    #   run: echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
-    #   shell: bash
-
-    # - name: Verify Docker connection
-    #   run: |
-    #     docker info
-    #     docker version
-    #   shell: bash
-
-    # - name: 验证 Docker 环境
-    #   run: |
-    #     echo "Docker 版本信息:"
-    #     docker version
-    #     echo "Docker 守护进程配置:"
-    #     docker info | grep -E "Hostname|Server Version|Root Dir|HTTP Proxy"
-    #     echo "检查 Buildx 插件:"
-    #     ls -la /home/runner/.docker/cli-plugins/
-    #   shell: bash
-
     - name: 构建和发布镜像
       uses: docker/build-push-action@v4
-      with:
-        context: .
-        file: docker/Dockerfile
-        push: true
-        tags: myDockerHub/deploy-web:${{env.docker-tag}}
+      # with:
+      #   context: .
+      #   file: docker/Dockerfile
+      #   push: true
+      #   tags: myDockerHub/deploy-web:${{env.docker-tag}}
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
