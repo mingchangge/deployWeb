@@ -1,0 +1,54 @@
+name: Update Actions Runner Controller
+
+on:
+  schedule:
+    - cron: '0 15 * * *'  # 每天凌晨3点执行
+
+jobs:
+  check_and_update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Kubernetes credentials
+        uses: azure/setup-kubeadm@v1
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Check current version
+        id: check_version
+        run: |
+          CURRENT_VERSION=$(kubectl get deployment actions-runner-controller -n actions-runner-system -o jsonpath='{.metadata.labels.app-version}')
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_ENV
+
+      - name: Get latest version
+        id: get_latest_version
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/actions/actions-runner-controller/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+          echo "latest_version=$LATEST_VERSION" >> $GITHUB_ENV
+
+      - name: Check if update needed
+        id: check_update
+        run: |
+          if [ "$LATEST_VERSION" != "$CURRENT_VERSION" ]; then
+            echo "Update needed from $CURRENT_VERSION to $LATEST_VERSION"
+            echo "update_needed=true" >> $GITHUB_ENV
+          else
+            echo "No update needed"
+            echo "update_needed=false" >> $GITHUB_ENV
+          fi
+
+      - name: Update Actions Runner Controller
+        if: ${{ env.update_needed }}
+        run: |
+          helm upgrade actions-runner-controller actions-runner-controller/actions-runner-controller \
+            --version ${{ env.LATEST_VERSION }} \
+            -n actions-runner-system
+
+      - name: Verify update
+        if: ${{ env.update_needed }}
+        run: |
+          kubectl get deployment actions-runner-controller -n actions-runner-system
+          kubectl get deployment actions-runner-controller-github-webhook-server -n actions-runner-system
