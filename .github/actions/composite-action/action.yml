@@ -1,5 +1,5 @@
 name: "Composite Action Example"
-description: "Runs linter and formatter-2"
+description: "Runs linter and formatter"
 runs:
   using: "composite"
   steps:
