@@ -4,6 +4,11 @@ jobs:
   build-dev:
     runs-on: [self-hosted, linux, X64]
     steps:
+      - name: Debug Network
+        run: |
+          curl -v https://github.com
+          git ls-remote https://github.com/mingchangge/deployWeb.git
+        shell: bash
       - name: 检出代码
         uses: actions/checkout@v4
         with:
