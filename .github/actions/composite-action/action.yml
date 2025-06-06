@@ -38,9 +38,9 @@ runs:
     #   shell: bash
     - name: 构建准备
       uses: docker/setup-buildx-action@v3
-      with:
+      with: #指定用于运行 BuildKit 的容器镜像
         driver-opts: |
-          image=192.168.21.157:5000/moby/buildkit #指定用于运行 BuildKit 的容器镜像
+          image=192.168.21.157:5000/moby/buildkit
           network=host
 
     - name: 构建和发布镜像
