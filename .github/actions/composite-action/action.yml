@@ -40,7 +40,7 @@ runs:
       uses: docker/setup-buildx-action@v3
       with: #指定用于运行 BuildKit 的容器镜像
         driver-opts: |
-          image=192.168.21.157:5000/moby/buildkit
+          image=my-registry.lxq.com:1443/moby/buildkit
           network=host
 
     - name: 构建和发布镜像
