@@ -31,23 +31,18 @@ runs:
       run: npm run build:${{env.MODE}}
       shell: bash
 
-    # - name: Debug Network
-    #   run: |
-    #     curl -v https://github.com
-    #     git ls-remote https://github.com/mingchangge/deployWeb.git
-    #   shell: bash
     - name: 构建准备
       uses: docker/setup-buildx-action@v3
       with:
         driver-opts: image=ghub.webterren.com/buildkit
 
-    # - name: 构建和发布镜像
-    #   uses: docker/build-push-action@v4
-      # with:
-      #   context: .
-      #   file: docker/Dockerfile
-      #   push: true
-      #   tags: myDockerHub/deploy-web:${{env.docker-tag}}
+    - name: 构建和发布镜像
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: docker/Dockerfile
+        push: true
+        tags: https://my-registry.lxq.com:1443/deploy-web:${{env.docker-tag}}
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
