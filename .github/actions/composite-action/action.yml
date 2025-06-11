@@ -42,7 +42,7 @@ runs:
         context: .
         file: docker/Dockerfile
         push: true
-        tags: my-registry.lxq.com:1443/deploy-web:${{env.docker-tag}}
+        tags: 192.168.21.157:5000/deploy-web:${{env.docker-tag}}
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
