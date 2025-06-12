@@ -39,20 +39,28 @@ runs:
     
     - name: Set up Docker Buildx
       run: |
-        docker buildx create --use
+        # 创建一个新的 Buildx 构建器，并指定已拉取的 Buildkit 镜像
+        docker buildx create --use --driver-opt image=mydockerhub.web.com/buildkit
+        # 检查构建器的状态
         docker buildx inspect --bootstrap
       shell: bash
 
     - name: Configure network
       run: |
-        echo '{"experimental":"enabled","registry-mirrors":[],"insecure-registries":["my-registry.lxq.com:1443"]}' > /etc/docker/daemon.json
+        echo '{
+          "experimental": "enabled",
+          "registry-mirrors": [],
+          "insecure-registries": ["my-registry.lxq.com:1443"],
+          "iptables": true
+        }' > /etc/docker/daemon.json
         systemctl restart docker
       shell: bash
 
     - name: Test registry connectivity
       run: |
-        docker run --rm --network=host alpine \
-          sh -c 'apk add curl && curl -vk https://my-registry.lxq.com:1443/v2/'
+        docker run --rm --network=host alpine \\
+        sh -c 'apk add --no-cache curl && \\
+              curl - -vk https://my-registry.lxq.com:1443/v2/_catalog'
       shell: bash
 
     - name: 构建和发布镜像
