@@ -40,7 +40,7 @@ runs:
     - name: Set up Docker Buildx
       run: |
         # 创建一个新的 Buildx 构建器，并指定已拉取的 Buildkit 镜像
-        docker buildx create --use --driver-opt image=mydockerhub.web.com/buildkit
+        docker buildx create --use --driver-opt image=ghub.webterren.com/buildkit
         # 检查构建器的状态
         docker buildx inspect --bootstrap
       shell: bash
