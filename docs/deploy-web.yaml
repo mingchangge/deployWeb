@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: deploy-web
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP      
+  selector:
+    app: deploy-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-web
+  labels:
+    app: deploy-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-web
+  template:
+    metadata:
+      labels:
+        app: deploy-web
+    spec:
+      containers:
+      - name:  deploy-web
+        image: my-registry.lxq.com:1443/deploy-web:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
