@@ -36,6 +36,24 @@ runs:
       with:
         driver-opts: image=ghub.webterren.com/buildkit
         network: host # 启用宿主机网络模式
+    
+    - name: Set up Docker Buildx
+      run: |
+        docker buildx create --use
+        docker buildx inspect --bootstrap
+      shell: bash
+
+    - name: Configure network
+      run: |
+        echo '{"experimental":"enabled","registry-mirrors":[],"insecure-registries":["my-registry.lxq.com:1443"]}' > /etc/docker/daemon.json
+        systemctl restart docker
+      shell: bash
+
+    - name: Test registry connectivity
+      run: |
+        docker run --rm --network=host alpine \
+          sh -c 'apk add curl && curl -vk https://my-registry.lxq.com:1443/v2/'
+      shell: bash
 
     - name: 构建和发布镜像
       uses: docker/build-push-action@v4
