@@ -37,6 +37,8 @@ runs:
         driver-opts: |
           image=ghub.webterren.com/buildkit
           network=host
+          # 添加私有仓库证书信任
+          buildkitd-flags: --allow-insecure-entitlement security.insecure
 
     - name: 构建和发布镜像
       uses: docker/build-push-action@v6
@@ -45,6 +47,11 @@ runs:
         file: docker/Dockerfile
         push: true
         tags: my-registry.lxq.com:1443/deploy-web:${{env.docker-tag}}
+        # 添加证书信任参数
+        builder: ${{ steps.buildx.outputs.name }}
+        provenance: false
+        secrets: |
+          "id=my_sans_registry,src=certs/sans_registry.crt"
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
