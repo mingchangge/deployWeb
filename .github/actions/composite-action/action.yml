@@ -51,7 +51,10 @@ runs:
         builder: ${{ steps.buildx.outputs.name }}
         provenance: false
         secrets: |
-          "id=my_sans_registry,src=certs/sans_registry.crt"
+          "id=my_sans_registry,src=certs/sans_registry.crt,dst=/etc/buildkit/certs/sans_registry.crt"
+           # 添加 buildkit 配置文件
+        config: |
+          docker/buildkitd.toml
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
