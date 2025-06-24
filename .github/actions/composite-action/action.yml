@@ -37,7 +37,8 @@ runs:
         driver-opts: |
           image=ghub.webterren.com/buildkit
           network=host
-          buildkitd-flags: --allow-insecure-entitlement security.insecure
+        # 添加私有仓库证书信任
+        buildkitd-flags: --allow-insecure-entitlement security.insecure
 
     - name: 构建和发布镜像
       uses: docker/build-push-action@v6
