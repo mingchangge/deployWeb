@@ -40,6 +40,16 @@ runs:
         # 添加私有仓库证书信任
         buildkitd-flags: --allow-insecure-entitlement security.insecure
 
+    - name: 验证证书加载
+      run: |
+        echo "==== 本地证书文件 ===="
+        ls -l certs/sans_registry.crt
+        echo "==== 证书头部信息 ===="
+        head -n 5 certs/sans_registry.crt
+        echo "==== 容器证书目录 ===="
+        docker buildx inspect --bootstrap | grep -A 3 'Registries'
+      shell: bash
+
     - name: 构建和发布镜像
       uses: docker/build-push-action@v6
       with:
