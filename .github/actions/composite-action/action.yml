@@ -60,11 +60,9 @@ runs:
         # 添加证书信任参数
         builder: ${{ steps.buildx.outputs.name }}
         provenance: false
+        allow: security.insecure  # 如 runner 未信任证书，可临时加此参数
         secrets: |
           "id=my_sans_registry,src=certs/registry.crt,dst=/etc/buildkit/certs/registry.crt"
-        # 添加 buildkit 配置文件
-        configs: |
-          ${{ github.workspace }}/docker/buildkitd.toml
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
