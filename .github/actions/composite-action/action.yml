@@ -37,17 +37,9 @@ runs:
         driver-opts: |
           image=ghub.webterren.com/buildkit
           network=host
-        # 添加私有仓库证书信任
-        buildkitd-flags: --allow-insecure-entitlement security.insecure
-
-    - name: 验证证书加载
-      run: |
-        echo "==== 本地证书文件 ===="
-        ls -l certs/registry.crt
-        echo "==== 证书头部信息 ===="
-        head -n 5 certs/registry.crt
-        echo "==== 容器证书目录 ===="
-        docker buildx inspect --bootstrap | grep -i 'registries' -A 5 || true
+          
+    - name: 查看 buildx builder 信息
+      run: docker buildx ls
       shell: bash
 
     - name: 构建和发布镜像
@@ -57,12 +49,6 @@ runs:
         file: docker/Dockerfile
         push: true
         tags: my-registry.lxq.com:1443/deploy-web:${{env.docker-tag}}
-        # 添加证书信任参数
-        builder: ${{ steps.buildx.outputs.name }}
-        provenance: false
-        allow: security.insecure  # 如 runner 未信任证书，可临时加此参数
-        secrets: |
-          "id=my_sans_registry,src=certs/registry.crt,dst=/etc/buildkit/certs/registry.crt"
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
