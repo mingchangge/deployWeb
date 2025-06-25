@@ -1,5 +1,5 @@
 name: "Composite Action Example"
-description: "Runs linter and formatter"
+description: "Runs linter and formatter-1"
 runs:
   using: "composite"
   steps:
@@ -46,7 +46,7 @@ runs:
     - name: 检查 buildkit 证书
       run: ls -l /etc/buildkit/certs/
       shell: bash
-      
+
     - name: 构建和发布镜像
       uses: docker/build-push-action@v6
       with:
