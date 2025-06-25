@@ -31,16 +31,17 @@ runs:
       run: npm run build:${{env.MODE}}
       shell: bash
 
-    # - name: 构建准备
-    #   uses: docker/setup-buildx-action@v3
-    #   with:
-    #     driver-opts: |
-    #       image=ghub.webterren.com/buildkit
-    #       network=host
+    - name: 构建准备
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver-opts: |
+          image=ghub.webterren.com/buildkit
+          network=host
+        buildkitd-flags: --config /etc/buildkit/certs/buildkitd.toml
 
-    # - name: 查看 buildx builder 信息
-    #   run: docker buildx ls
-    #   shell: bash
+    - name: 查看 buildx builder 信息
+      run: docker buildx ls
+      shell: bash
 
     - name: 构建和发布镜像
       uses: docker/build-push-action@v6
