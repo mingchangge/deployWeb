@@ -62,7 +62,7 @@ runs:
         provenance: false
         secrets: |
           "id=my_sans_registry,src=certs/registry.crt,dst=/etc/buildkit/certs/registry.crt"
-           # 添加 buildkit 配置文件
+        # 添加 buildkit 配置文件
         configs: |
           ${{ github.workspace }}/docker/buildkitd.toml
 
