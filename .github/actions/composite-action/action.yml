@@ -43,9 +43,9 @@ runs:
     - name: 验证证书加载
       run: |
         echo "==== 本地证书文件 ===="
-        ls -l certs/sans_registry.crt
+        ls -l certs/registry.crt
         echo "==== 证书头部信息 ===="
-        head -n 5 certs/sans_registry.crt
+        head -n 5 certs/registry.crt
         echo "==== 容器证书目录 ===="
         docker buildx inspect --bootstrap | grep -i 'registries' -A 5 || true
       shell: bash
@@ -61,10 +61,10 @@ runs:
         builder: ${{ steps.buildx.outputs.name }}
         provenance: false
         secrets: |
-          "id=my_sans_registry,src=certs/sans_registry.crt,dst=/etc/buildkit/certs/sans_registry.crt"
+          "id=my_sans_registry,src=certs/registry.crt,dst=/etc/buildkit/certs/registry.crt"
            # 添加 buildkit 配置文件
-        config: |
-          docker/buildkitd.toml
+        configs: |
+          ${{ github.workspace }}/docker/buildkitd.toml
 
     # - name: 更新镜像
     #   uses: actions-hub/kubectl@master #要求base64编码的kubeconfig 文件
