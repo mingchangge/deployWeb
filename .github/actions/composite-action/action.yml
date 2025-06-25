@@ -47,7 +47,7 @@ runs:
         echo "==== 证书头部信息 ===="
         head -n 5 certs/sans_registry.crt
         echo "==== 容器证书目录 ===="
-        docker buildx inspect --bootstrap | grep -A 3 'Registries'
+        docker buildx inspect --bootstrap | grep -i 'registries' -A 5 || true
       shell: bash
 
     - name: 构建和发布镜像
