@@ -43,6 +43,10 @@ runs:
       run: docker buildx ls
       shell: bash
 
+    - name: 检查 buildkit 证书
+      run: ls -l /etc/buildkit/certs/
+      shell: bash
+      
     - name: 构建和发布镜像
       uses: docker/build-push-action@v6
       with:
