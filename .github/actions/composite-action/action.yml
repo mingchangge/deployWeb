@@ -37,7 +37,7 @@ runs:
         driver-opts: |
           image=ghub.webterren.com/buildkit
           network=host
-          mount=type=bind,src=/certs,dst=/etc/buildkit/certs,readonly
+          mount=type=bind,src=/certs,dst=/etc/buildkit/certs,readonly=true
         buildkitd-flags: --config /etc/buildkit/certs/buildkitd.toml
 
     - name: 查看 buildx builder 信息
